@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>TedTalks FeedReader</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="keywords" content="tedtalks,feed,reader,google api,publisher">
+      <meta name="description" content="A basic feedreader for Ted talks">
+      <meta name="author" content="Tong Zou">
+      <!-- Le styles -->
+      <link href="css/bootstrap.css" rel="stylesheet">
+      <link href="css/bootstrap-responsive.css" rel="stylesheet">
+      <link href="css/main.css" rel="stylesheet">
+      <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+      <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <![endif]-->
+      <!-- Fav and touch icons -->
+      <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
+      <link rel="shortcut icon" href="ico/favicon.png">
+      <!-- google feed api has to be loaded in the head -->
+      <script src="https://www.google.com/jsapi"></script>
+      <script type="text/javascript">
+         google.load("feeds", "1");
+      </script>
+   </head>
+   <body>
+      <header class="container-fluid">
+         <div class="row-fluid logo-img">
+            <img src="img/tedlogo.jpg"/>
+            <hr>
+         </div>
+      </header>
+      <section class="input-form container-fluid">
+         <div class="row-fluid" id="adjust-form">
+               <fieldset>
+                  <legend>Adjust your feed entries</legend>
+                  <div class="row-fluid">
+                     <div class="span3">
+                        <label>Number of feed entries per page</label>
+                        <input type="text" id="num-entries" placeholder="5">
+                        <span class="help-block">The default number of entries per page is 5.</span>
+                     </div>
+                     <div class="span3">
+                        <label>Number of total feed entries</label>
+                        <input type="text" id="total-entries" placeholder="25">
+                        <span class="help-block">The default number of feed entries fetched is 25.</span>
+                     </div>
+                     <div class="span3 adjust-btn">
+                        <button type="submit" class="btn btn-secondary">Fetch</button>
+                        </span>
+                     </div>
+                  </div>
+               </fieldset>
+         </div>
+      </section>
+      <main id="feedApp">
+         <div class="container-fluid">
+            <article id="feedcontent-holder"></article>
+            <section id="pagination-holder"></section>
+         </div>
+         </div>   
+      </main>
+      <footer class="container-fluid muted">
+         <hr>
+         &copy; 2013 Tong Zou
+      </footer>
+      <!-- Le javascript
+         ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="js/jquery.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/underscore-min.js"></script>
+      <script src="js/backbone-min.js"></script>
+      <script src="js/handlebars.js"></script>
+      <script src="js/main.js"></script> 
+      <!-- handlebar templates -->
+      <script id="feedcontent-template" type="text/x-handlebars-template">
+         <div class="accordian" id="accordion2">
+         {{#each entries}}
+         <div class="accordion-group">
+         <div class="accordion-heading">
+         <div class="row-fluid">
+         
+         <div class="span2"><img src={{thumbnailUrl}} /></div>
+         <div class="span8">
+           <div class="row-fluid">
+             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href={{index-helper "#content" index}}>
+               <div>{{author}} - {{title}}</div>
+             </a>
+               <div><strong>Published:</strong> {{publishedDate}}</div>
+               <div>
+               <strong>Category:</strong> {{category}}</div>
+            </div>
+           <div class="row-fluid">
+               <div>{{contentSnippet}}</div>
+           </div>
+          </div>
+         </div>
+         </div>
+         <div id={{index-helper "content" index}} class="accordion-body collapse">
+         <div class="accordion-inner well">
+         <div class="row-fluid"><strong>Details:</strong></div>
+         <div class="row-fluid">{{{content}}}</div>
+         <div class="row-fluid">
+         <a href={{link}}><i class="icon-book"></i> Read More</a>
+         <a href={{videoUrl}}><i class="icon-facetime-video"></i> Watch the video</a>
+         </div>
+         </div>
+         </div>
+         {{/each}}
+         </div>
+      </script>
+      <script id="pagination-template" type="text/x-handlebars-template">
+         <div class="pagination pagination-centered">
+         <ul>
+         <li class="prev"><a href="#prev">Prev</a></li>
+         {{#each pageItems}}
+          {{#if pageIndex}} 
+            <li class={{index-helper "page" pageIndex}}><a href={{index-helper "#page/" pageIndex}}>{{pageIndex}}</a></li>
+          {{/if}}
+         {{/each}}
+         <li class="next"><a href="#next">Next</a></li>
+         </ul>
+          </div>
+      </script>
+   </body>
+</html>
